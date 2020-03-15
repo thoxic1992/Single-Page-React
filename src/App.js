@@ -1,26 +1,47 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import HomePage from './pages/Home';
+import {HashRouter as Router, Route, Switch, Link, Redirect, withRouter} from 'react-router-dom';
 
-function App() {
+const PageNotFound = () => {
+  return <div>404 - page not found</div>;
+};
+
+const Post = withRouter(
+  (props) => {
+    return <React.Fragment>
+      <div>Post</div>
+      <div>{props.match.params.postSlug}</div>
+      <Link to="/">wróć do home</Link>
+    </React.Fragment>;
+  }
+);
+
+function MainApp () {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+
+      <Router>
+        <Switch>
+
+          <Route path="/" exact>
+            <HomePage />
+          </Route>
+
+          <Route path="/blog" exact>
+            <HomePage />
+          </Route>
+
+          <Route path="/blog/:postSlug" exact>
+            <Post />
+          </Route>
+
+          <Route path="/*">
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
 
-export default App;
+export default MainApp
